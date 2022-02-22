@@ -12,7 +12,12 @@ export const get = async (url, options) => {
 		})
 		.then((response) => {
 			if (options.success) {
-				options.success(response.data);
+				options.success(
+					response.data,
+					response.headers['x-pagination-pages']
+						? response.headers['x-pagination-pages']
+						: 0,
+				);
 			}
 		})
 		.catch((error) => {

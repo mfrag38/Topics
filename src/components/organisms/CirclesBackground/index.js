@@ -3,7 +3,7 @@ import { Dimensions, View } from 'react-native';
 import { styles } from './style';
 
 const width = Dimensions.get('screen').width / 1.75;
-const colors = ['#393486', '#0052D6', '#11998B'];
+const colors = ['#808080', '#fff', '#000'];
 
 const CirclesBackground = () => {
 	const { container, bgCircle } = styles;
