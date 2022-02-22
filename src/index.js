@@ -2,11 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
-import { MainNavigator } from '_navigation';
-import Reactotron from 'reactotron-react-native';
+import MainNavigator from './navigation/MainNavigator';
 
 const App = () => {
-	Reactotron.log('The Store', store);
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
@@ -15,7 +13,5 @@ const App = () => {
 		</Provider>
 	);
 };
-
-// const App = () => <AuthScreen />;
 
 export default App;

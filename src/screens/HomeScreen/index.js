@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
 	ActivityIndicator,
 	View,
 	Text,
-	Button,
 	FlatList,
-	Pressable,
 	TouchableOpacity,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Reactotron from 'reactotron-react-native';
-import { logout } from '../../redux/actions/authActions';
 import { getPosts, getMorePosts } from '../../redux/actions/postsActions';
 import { styles } from './style';
 
 const HomeScreen = (props) => {
-	const State = useSelector((state) => state);
-	const UserState = useSelector((state) => state.User);
+	const AuthState = useSelector((state) => state.Auth);
 	const PostsState = useSelector((state) => state.Posts);
 
 	const dispatch = useDispatch();
@@ -26,14 +21,23 @@ const HomeScreen = (props) => {
 		dispatch(getPosts());
 	}, []);
 
-	useEffect(() => {
-		Reactotron.log('The Posts:', PostsState.posts);
-	}, [PostsState.posts]);
-
-	const loadMoreData = () => {
-		console.log('End Reached');
-		dispatch(getMorePosts(PostsState.currentPage));
+	const loadMorePosts = () => {
+		if (PostsState.maxPostsPages >= PostsState.currentPostsPage) {
+			dispatch(getMorePosts(PostsState.currentPostsPage));
+		}
 	};
+
+	const {
+		container,
+		listContainer,
+		listContentContainer,
+		addPostFAB,
+		postContainer,
+		postTitleContainer,
+		postTitleText,
+		postBodyContainer,
+		postBodyText,
+	} = styles;
 
 	const RenderPosts = ({ post }) => {
 		return (
@@ -45,53 +49,14 @@ const HomeScreen = (props) => {
 					});
 				}}
 			>
-				<View
-					style={{
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-						marginHorizontal: 8,
-						marginVertical: 8,
-						borderRadius: 8,
-						elevation: 3,
-						overflow: 'hidden',
-						backgroundColor: '#DCDCDC',
-					}}
-				>
-					<View
-						style={{
-							width: '100%',
-							justifyContent: 'center',
-							alignItems: 'flex-start',
-							padding: 8,
-						}}
-					>
-						<Text
-							numberOfLines={1}
-							style={{
-								fontSize: 20,
-								fontWeight: 'bold',
-								color: '#000',
-							}}
-						>
+				<View style={postContainer}>
+					<View style={postTitleContainer}>
+						<Text numberOfLines={1} style={postTitleText}>
 							{post.title}
 						</Text>
 					</View>
-					<View
-						style={{
-							width: '100%',
-							justifyContent: 'center',
-							alignItems: 'flex-start',
-							padding: 8,
-						}}
-					>
-						<Text
-							numberOfLines={3}
-							style={{
-								fontSize: 16,
-								color: '#000',
-							}}
-						>
+					<View style={postBodyContainer}>
+						<Text numberOfLines={3} style={postBodyText}>
 							{post.body}
 						</Text>
 					</View>
@@ -100,52 +65,29 @@ const HomeScreen = (props) => {
 		);
 	};
 
-	const { container } = styles;
-
 	return PostsState.isHomeLoading ? (
 		<View style={container}>
-			<ActivityIndicator size={75} />
+			<ActivityIndicator color='#000' size={75} />
 		</View>
 	) : (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: 'center',
-				alignItems: 'center',
-			}}
-		>
-			<View
-				style={{
-					width: '100%',
-					flexGrow: 1,
-				}}
-			>
+		<View style={container}>
+			<View style={listContainer}>
 				<FlatList
 					keyExtractor={(post, index) => `${index}-${post.title}`}
 					data={PostsState.posts}
-					pagingEnabled={true}
 					renderItem={({ item }) => <RenderPosts post={item} />}
-					contentContainerStyle={{
-						flexGrow: 1,
-						backgroundColor: '#fff',
-					}}
+					contentContainerStyle={listContentContainer}
 					onEndReachedThreshold={0.6}
-					onEndReached={loadMoreData}
+					onEndReached={loadMorePosts}
 				/>
 			</View>
 			<TouchableOpacity
-				style={{
-					width: 60,
-					height: 60,
-					position: 'absolute',
-					justifyContent: 'center',
-					alignItems: 'center',
-					borderRadius: 30,
-					right: 16,
-					bottom: 16,
-					backgroundColor: '#000',
+				style={addPostFAB}
+				onPress={() => {
+					props.navigation.navigate('AddPost', {
+						userId: AuthState.user.id,
+					});
 				}}
-				onPress={() => console.log('FAB')}
 			>
 				<Icon name='plus' color='#fff' size={24} />
 			</TouchableOpacity>

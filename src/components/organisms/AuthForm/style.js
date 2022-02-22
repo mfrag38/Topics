@@ -17,12 +17,13 @@ export const styles = StyleSheet.create({
 	},
 	textInputContainer: {
 		color: '#000',
-		borderRadius: 40,
+		borderRadius: 8,
 		borderWidth: 2,
-		borderColor: '#393486',
+		borderColor: '#000',
 		marginVertical: 10,
 		paddingHorizontal: 10,
 		paddingVertical: 5,
+		overflow: 'hidden',
 	},
 	textInputStyle: {
 		height: 40,
@@ -36,18 +37,5 @@ export const styles = StyleSheet.create({
 	submitButtonContainer: {
 		marginHorizontal: 16,
 		paddingHorizontal: 16,
-	},
-	submitButton: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 32,
-		borderRadius: 40,
-		elevation: 3,
-		backgroundColor: '#393486',
-	},
-	submitButtonText: {
-		color: '#fff',
-		fontSize: 18,
 	},
 });

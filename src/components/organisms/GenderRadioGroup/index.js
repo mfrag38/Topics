@@ -1,5 +1,5 @@
 import React from 'react';
-import { RadioGroup } from '_molecules';
+import RadioGroup from '../../molecules/RadioGroup';
 
 const GenderRadioGroup = (props) => {
 	const { title, onGenderPress, radioColor, textColor } = props;

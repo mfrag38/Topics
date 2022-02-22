@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { GenderRadioGroup } from '_organisms';
+import { View, TextInput, Button, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
+import GenderRadioGroup from '../GenderRadioGroup';
 import { authUser } from '../../../redux/actions/authActions';
-import { purgeStoredState } from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Reactotron from 'reactotron-react-native';
 import { styles } from './style';
 
 const AuthForm = () => {
-	const State = useSelector((state) => state);
 	const [userName, setUserName] = useState('');
 	const [userEmail, setUserEmail] = useState('');
 	const [selectedGender, setSelectedGender] = useState('');
@@ -21,36 +17,28 @@ const AuthForm = () => {
 	};
 
 	const login = () => {
-		// const persistConfig = {
-		// key: 'root',
-		// storage: AsyncStorage,
-		// };
-		// purgeStoredState(persistConfig);
-		///////////////////
-		// Reactotron.log('The State:', State);
 		if (
 			userName.length === 0 &&
 			userEmail.length === 0 &&
 			selectedGender.length === 0
 		) {
-			console.log('Please Enter Some Info');
+			Alert.alert('Error', 'Please Enter Some Info');
 		} else if (
 			userName.length === 0 &&
 			(userEmail.length !== 0 || selectedGender.length !== 0)
 		) {
-			console.log('Please Enter Name');
+			Alert.alert('Error', 'Please Enter Name');
 		} else if (
 			userEmail.length === 0 &&
 			(userName.length !== 0 || selectedGender.length !== 0)
 		) {
-			console.log('Please Enter Email');
+			Alert.alert('Error', 'Please Enter Email');
 		} else if (
 			selectedGender.length === 0 &&
 			(userName.length !== 0 || userEmail.length !== 0)
 		) {
-			console.log('Please Select Gender');
+			Alert.alert('Error', 'Please Select Gender');
 		} else {
-			console.log('Authenticating...');
 			dispatch(authUser(userName, userEmail, selectedGender));
 		}
 	};
@@ -63,8 +51,6 @@ const AuthForm = () => {
 		textInputStyle,
 		radioGroupContainer,
 		submitButtonContainer,
-		submitButton,
-		submitButtonText,
 	} = styles;
 
 	return (
@@ -76,6 +62,7 @@ const AuthForm = () => {
 							style={textInputStyle}
 							onChangeText={(text) => setUserName(text)}
 							value={userName}
+							multiline={false}
 							placeholder='Name'
 							keyboardType='default'
 							autoCapitalize='words'
@@ -86,6 +73,7 @@ const AuthForm = () => {
 							style={textInputStyle}
 							onChangeText={(text) => setUserEmail(text)}
 							value={userEmail}
+							multiline={false}
 							placeholder='Email'
 							keyboardType='email-address'
 						/>
@@ -95,15 +83,13 @@ const AuthForm = () => {
 					<GenderRadioGroup
 						onGenderPress={(gender) => onGenderPress(gender)}
 						title='Select Gender'
-						radioColor='#393486'
+						radioColor='#000'
 						textColor='#000'
 					/>
 				</View>
 			</View>
 			<View style={submitButtonContainer}>
-				<Pressable style={submitButton} onPress={login}>
-					<Text style={submitButtonText}>Login</Text>
-				</Pressable>
+				<Button title='Login' color='#000' onPress={login} />
 			</View>
 		</View>
 	);

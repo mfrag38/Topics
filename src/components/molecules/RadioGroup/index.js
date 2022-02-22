@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { RadioButton } from '_atoms';
+import RadioButton from '../../atoms/RadioButton';
 import { styles } from './style';
 
 const RadioGroup = (props) => {
