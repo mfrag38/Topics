@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
 	},
 	textInputStyle: {
 		height: 40,
+		color: '#000',
 	},
 	radioGroupContainer: {
 		justifyContent: 'center',

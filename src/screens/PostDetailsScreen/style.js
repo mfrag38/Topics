@@ -74,6 +74,7 @@ export const styles = StyleSheet.create({
 	commentTextInput: {
 		maxHeight: 200,
 		minHeight: 40,
+		color: '#000',
 	},
 	commentButtonContainer: {
 		marginHorizontal: 8,
